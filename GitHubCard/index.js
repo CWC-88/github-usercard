@@ -4,34 +4,54 @@
 axios.get('https://api.github.com/users/CWC-88')
 
 const cardFromIndex = document.querySelector('.cards');
-const followersArray = [ 'tetondan',
-  'dustinmyers',
-  'justsml',
-  'luishrd',
-  'bigknell'];
+const followersArray = [ ];
 
 
-  axios.get('https://api.github.com/users/CWC-88/followers')
+//   axios.get('https://api.github.com/users/CWC-88/followers')
 
   
-.then(res => {
-  return followersArray = res.data.login;
-})
+// .then(res => {
+//   return followersArray = res.data.login;
+// })
   
 
-.catch((err)=>console.log(err));
+// .catch((err)=>console.log(err));
 
-followersArray.forEach((user) => {
-  axios.get(`https://api.github.com/users/${user}`)
-  .then(res => {
-    const data = res.data;
-    const  newCard = gitHubCardCreator(data);
-    cardFromIndex.appendChild(newCard)
-  } )
+// followersArray.forEach((user) => {
+//   axios.get(`https://api.github.com/users/${user}`)
+//   .then(res => {
+//     const data = res.data;
+//     const  newCard = gitHubCardCreator(data);
+//     cardFromIndex.appendChild(newCard)
+//   } )
 
-  .catch(err => console.log(err))
-})
+//   .catch(err => console.log(err))
+// })
+axios.get('https://api.github.com/users/CWC-88/followers')
+.then((res) => {
+const followersArray = res.data;
+const followersList = followersArray.map((user) => {
+  return user.login;
+}
+);
+return followersList;
+}
 
+)
+.then((followersList) =>{
+  followersList.forEach((user) => {
+    axios.get(`https://api.github.com/users/${user}`)
+    .then((res) =>{
+      const data = res.data;
+      const newCard =gitHubCardCreator(data);
+      cardFromIndex.appendChild(newCard);
+    }
+    );
+  }
+  );
+}
+)
+.catch((err) => console.log(err));
 
 
 
